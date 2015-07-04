@@ -41,6 +41,17 @@ describe('hashTable', function() {
     window.getIndexBelowMaxForKey = oldHashFunction;
   });
 
+  it('should double in size when needed', function() {
+    hashTable.insert('Steven', 'Tyler');
+    hashTable.insert('Steve', 'Tyle');
+    hashTable.insert('Stn', 'Ter');
+    hashTable.insert('Sen', 'Tylerbs');
+    hashTable.insert('Steveasdn', 'Tyledfsr');
+    hashTable.insert('Stevelkjin', 'Tiooiyler');
+    //expect(hashTable._limit).to.equal(16);
+    
+  });
+
   // (Extra credit! Remove the extra "x" when you want the following tests to run)
   xit('should double in size when needed', function() {
     _.each(people, function(person) {
