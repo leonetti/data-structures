@@ -36,7 +36,7 @@ describe('graph', function() {
     expect(graph.hasEdge('penguins', 'kittens')).to.equal(false);
   });
 
-  it('should remove edges between nodes', function() {
+  it('should add edges between nodes', function() {
     graph.addNode('apples');
     graph.addNode('satsumas');
     graph.addEdge('satsumas', 'apples');
@@ -56,5 +56,13 @@ describe('graph', function() {
     expect(graph.hasEdge('kittens', 'satsumas')).to.equal(true);
     expect(graph.hasEdge('penguins', 'satsumas')).to.equal(true);
     expect(graph.hasEdge('satsumas', 'satsumas')).to.equal(true);
+  });
+
+  it('should remove edges between nodes', function(){
+    graph.addNode('apples');
+    graph.addNode('satsumas');
+    graph.addEdge('satsumas', 'apples');
+    graph.removeNode('apples');
+    expect(graph.hasEdge('satsumas', 'apples')).to.equal(false);
   });
 });
