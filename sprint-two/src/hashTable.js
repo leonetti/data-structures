@@ -5,31 +5,60 @@ var HashTable = function(){
 
 HashTable.prototype.insert = function(k, v){
   var i = getIndexBelowMaxForKey(k, this._limit);
+  var getLinkedList = this._storage.get(i);
+  var tuple = [k,v];
+  var replacedKey = false;
 
-  if (this._storage.get(i) === undefined) {
-    var house = {};
-
-    house[k] = v;
-    this._storage.set(i, house);
+  if(getLinkedList === undefined){
+    var addLinkedList = LinkedList();
+    addLinkedList.addToTail(tuple);
+    this._storage.set(i, addLinkedList);
   } else {
-    var oldHouse = this._storage.get(i);
-    oldHouse[k] = v;
-  }
-  
+    do{
+      if(getLinkedList.head.value[0] === k){
+        replacedKey = true;
+        getLinkedList.head.value[1] = v;
+      } else {
+        getLinkedList = getLinkedList.head.next;
+      }
+    }while(getLinkedList !== null);
 
+    getLinkedList = this._storage.get(i);
+
+    if(replacedKey === false){
+      getLinkedList.addToTail(tuple);
+    }
+  }
 };
 
 HashTable.prototype.retrieve = function(k){
   var i = getIndexBelowMaxForKey(k, this._limit);
-  
-  return this._storage.get(i)[k];
+  var nodeHead = this._storage.get(i).head;
+  var descendLinkedList = function(node){
+    if(k === node.value[0]){
+      return node.value[1];
+    } else if(node.next.value){
+      return descendLinkedList(node.next);
+    }
+  };
+
+  return descendLinkedList(nodeHead);
+
 };
 
 HashTable.prototype.remove = function(k){
 	var i = getIndexBelowMaxForKey(k, this._limit);
-	
-  var ourHouse = this._storage.get(i);
-  ourHouse[k] = null;
+  var nodeHead = this._storage.get(i).head;
+
+  var descendLinkedList = function(node){
+    if(k === node.value[0]){
+      node.value[1] = null;
+    } else if(node.next){
+      descendLinkedList(node.next);
+    }
+  };
+
+  descendLinkedList(nodeHead);
 };
 
 
